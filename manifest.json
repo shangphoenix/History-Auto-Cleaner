@@ -1,13 +1,15 @@
 {
   "manifest_version": 3,
   "name": "History Auto-Cleaner",
-  "version": "1.0.0",
-  "description": "自动清理历史记录，阻止地址栏补全特定网站",
+  "version": "1.0.1",
+  "description": "自动清理历史记录 + 书签隔离管理",
   "permissions": [
     "history",
     "storage",
     "tabs",
-    "alarms"
+    "alarms",
+    "bookmarks",
+    "activeTab"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -17,7 +19,7 @@
   },
   "options_page": "options/options.html",
   "action": {
-    "default_popup": "options/options.html",
+    "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",

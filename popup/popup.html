@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>隔离书签管理器</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <h1>隔离书签管理器</h1>
+        <button id="settings-btn" class="btn-icon" title="打开设置">⚙️</button>
+      </div>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="搜索隔离书签...">
+        <span class="search-icon">🔍</span>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- 书签树 -->
+      <div id="bookmark-tree" class="bookmark-tree">
+        <!-- 动态生成 -->
+      </div>
+      
+      <!-- 空状态 -->
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-icon">📂</div>
+        <p>暂无隔离书签</p>
+        <p class="empty-hint">访问黑名单网站时，匹配的书签会自动移入此处</p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="selection-info" id="selection-info">
+        <span id="selected-count">已选择 0 项</span>
+      </div>
+      <div class="action-buttons">
+        <button id="add-current-btn" class="btn btn-primary" title="将当前页面加入隔离区">
+          ➕ 添加当前页
+        </button>
+        <button id="restore-btn" class="btn btn-secondary" disabled>
+          🔄 恢复选中
+        </button>
+        <button id="delete-btn" class="btn btn-danger" disabled>
+          🗑️ 删除
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 确认对话框 -->
+  <div id="confirm-dialog" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="confirm-title">确认操作</h3>
+      <p id="confirm-message">确定要执行此操作吗？</p>
+      <div class="modal-actions">
+        <button id="confirm-cancel" class="btn btn-secondary">取消</button>
+        <button id="confirm-ok" class="btn btn-primary">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通知 -->
+  <div id="notification" class="notification hidden"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

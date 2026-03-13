@@ -42,6 +42,43 @@ work.facebook.com" rows="4"></textarea>
         <div id="whitelist-error" class="error-message"></div>
       </section>
 
+      <!-- 书签隔离设置 -->
+      <section class="section">
+        <h2>书签隔离</h2>
+        <p class="description">将匹配黑名单的书签从 Chrome 书签迁移到扩展内部管理，避免出现在地址栏建议中</p>
+        
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="bookmark-isolation">
+            <span class="checkbox-text">启用书签隔离</span>
+            <span class="checkbox-desc">自动迁移匹配黑名单的书签到隔离区</span>
+          </label>
+          
+          <label class="checkbox-label">
+            <input type="checkbox" id="scan-on-startup">
+            <span class="checkbox-text">启动时扫描</span>
+            <span class="checkbox-desc">扩展启动时扫描整个书签树并隔离匹配项</span>
+          </label>
+        </div>
+
+        <div id="isolation-stats" class="stats-container">
+          <h3>隔离书签统计</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-value" id="stats-bookmarks">0</span>
+              <span class="stat-label">已隔离书签</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="stats-folders">0</span>
+              <span class="stat-label">文件夹</span>
+            </div>
+          </div>
+          <button id="open-bookmarks-btn" class="btn btn-secondary" style="margin-top: 15px;">
+            打开书签管理器
+          </button>
+        </div>
+      </section>
+
       <!-- 删除策略 -->
       <section class="section">
         <h2>删除策略</h2>

@@ -3,7 +3,9 @@ const DEFAULT_CONFIG = {
   blacklist: [],
   whitelist: [],
   deletionMode: 'immediate',
-  delayMinutes: 30
+  delayMinutes: 30,
+  bookmarkIsolation: true,
+  scanOnStartup: true
 };
 
 // DOM 元素
@@ -20,7 +22,12 @@ const elements = {
   testBtn: document.getElementById('test-btn'),
   testResult: document.getElementById('test-result'),
   saveBtn: document.getElementById('save-btn'),
-  saveStatus: document.getElementById('save-status')
+  saveStatus: document.getElementById('save-status'),
+  bookmarkIsolation: document.getElementById('bookmark-isolation'),
+  scanOnStartup: document.getElementById('scan-on-startup'),
+  statsBookmarks: document.getElementById('stats-bookmarks'),
+  statsFolders: document.getElementById('stats-folders'),
+  openBookmarksBtn: document.getElementById('open-bookmarks-btn')
 };
 
 // 初始化
@@ -43,8 +50,15 @@ async function init() {
   elements.delayMinutes.value = config.delayMinutes;
   elements.delayValue.textContent = config.delayMinutes;
   
+  // 设置书签隔离选项
+  elements.bookmarkIsolation.checked = config.bookmarkIsolation !== false;
+  elements.scanOnStartup.checked = config.scanOnStartup !== false;
+  
   // 根据模式显示/隐藏延迟设置
   updateDelayVisibility();
+  
+  // 加载隔离书签统计
+  await loadIsolationStats();
   
   // 绑定事件
   bindEvents();
@@ -59,6 +73,21 @@ async function loadConfig() {
 // 保存配置
 async function saveConfig(config) {
   await chrome.storage.local.set({ config });
+}
+
+// 加载隔离书签统计
+async function loadIsolationStats() {
+  try {
+    const result = await chrome.storage.local.get('isolatedBookmarks');
+    const isolated = result.isolatedBookmarks || { folders: [], bookmarks: [] };
+    
+    elements.statsBookmarks.textContent = isolated.bookmarks ? isolated.bookmarks.length : 0;
+    elements.statsFolders.textContent = isolated.folders ? isolated.folders.length : 0;
+  } catch (e) {
+    console.error('加载隔离书签统计失败:', e);
+    elements.statsBookmarks.textContent = '0';
+    elements.statsFolders.textContent = '0';
+  }
 }
 
 // 绑定事件
@@ -85,6 +114,13 @@ function bindEvents() {
       handleTest();
     }
   });
+  
+  // 打开书签管理器按钮
+  if (elements.openBookmarksBtn) {
+    elements.openBookmarksBtn.addEventListener('click', () => {
+      chrome.tabs.create({ url: chrome.runtime.getURL('popup/popup.html') });
+    });
+  }
 }
 
 // 更新延迟设置可见性
@@ -216,12 +252,18 @@ async function handleSave() {
   const deletionMode = document.querySelector('input[name="deletionMode"]:checked').value;
   const delayMinutes = parseInt(elements.delayMinutes.value);
   
+  // 获取书签隔离设置
+  const bookmarkIsolation = elements.bookmarkIsolation.checked;
+  const scanOnStartup = elements.scanOnStartup.checked;
+  
   // 保存配置
   const config = {
     blacklist,
     whitelist,
     deletionMode,
-    delayMinutes
+    delayMinutes,
+    bookmarkIsolation,
+    scanOnStartup
   };
   
   try {
