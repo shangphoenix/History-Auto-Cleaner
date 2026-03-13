@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History Auto-Cleaner 设置</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>History Auto-Cleaner</h1>
+      <p class="subtitle">自动清理历史记录，阻止地址栏补全</p>
+    </header>
+
+    <main>
+      <!-- 黑名单设置 -->
+      <section class="section">
+        <h2>黑名单</h2>
+        <p class="description">匹配的网址将自动从历史记录中删除</p>
+        <textarea id="blacklist" placeholder="每行一个规则，例如：
+*.facebook.com
+twitter.com
+https://example.com/private" rows="6"></textarea>
+        <div id="blacklist-error" class="error-message"></div>
+        <div class="examples">
+          <strong>支持的格式：</strong>
+          <ul>
+            <li><code>example.com</code> - 匹配该域名下所有页面</li>
+            <li><code>*.example.com</code> - 匹配所有子域名</li>
+            <li><code>https://example.com/login</code> - 仅匹配完整URL</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 白名单设置 -->
+      <section class="section">
+        <h2>白名单</h2>
+        <p class="description">优先级高于黑名单，匹配的网址将被保留（用于黑名单的例外情况）</p>
+        <textarea id="whitelist" placeholder="每行一个规则，例如：
+work.facebook.com" rows="4"></textarea>
+        <div id="whitelist-error" class="error-message"></div>
+      </section>
+
+      <!-- 删除策略 -->
+      <section class="section">
+        <h2>删除策略</h2>
+        
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="deletionMode" value="immediate" checked>
+            <span class="radio-text">立即删除</span>
+            <span class="radio-desc">页面访问后立即从历史移除（最安全）</span>
+          </label>
+          
+          <label class="radio-label">
+            <input type="radio" name="deletionMode" value="onClose">
+            <span class="radio-text">页面关闭后</span>
+            <span class="radio-desc">标签页关闭时删除（当前会话可找回）</span>
+          </label>
+          
+          <label class="radio-label">
+            <input type="radio" name="deletionMode" value="delayed">
+            <span class="radio-text">延迟删除</span>
+            <span class="radio-desc">设置时间后删除</span>
+          </label>
+        </div>
+
+        <div id="delay-container" class="delay-container hidden">
+          <label for="delayMinutes">延迟时间：<span id="delay-value">30</span> 分钟</label>
+          <input type="range" id="delayMinutes" min="1" max="60" value="30">
+        </div>
+      </section>
+
+      <!-- 实时预览 -->
+      <section class="section preview-section">
+        <h2>规则测试</h2>
+        <p class="description">输入URL测试是否会被删除</p>
+        <div class="test-input-group">
+          <input type="text" id="test-url" placeholder="https://example.com/page">
+          <button id="test-btn" class="btn btn-secondary">测试</button>
+        </div>
+        <div id="test-result" class="test-result"></div>
+      </section>
+    </main>
+
+    <footer>
+      <button id="save-btn" class="btn btn-primary">保存设置</button>
+      <div id="save-status" class="save-status"></div>
+    </footer>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
